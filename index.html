@@ -1,3 +1,38 @@
+Pasted text(5).txt
+Document
+Ashwin_Saji_AVD_Engineer_Resume(1).pdf
+PDF
+update the code using resume. its my portfolio
+
+Done. I updated the portfolio code using the actual information in your latest resume, rather than the exaggerated/unsupported metrics and case studies in the original portfolio.
+
+Key fixes include:
+
+600+ AVD host pools
+1,000+ VMs
+VA / VDP / VDNP environments
+AVD + FSLogix troubleshooting
+Terraform + Azure DevOps recompose/deployment
+Qualys vulnerability remediation
+PowerShell automation
+Azure Monitor / Log Analytics / KQL
+VMware vSphere + CyberArk experience
+CloudOpsComplete project
+AZ-900 + AI-900
+BCA education
+Removed claims such as 2,000+ hosts, 99.9% SLA, 100% declarative provisioning, Checkov/TFLint, Packer, 4-week→7-day patching, etc., because they aren't supported by the resume.
+
+Your resume confirms the core AVD/automation profile I'm using here.
+
+Updated portfolio: 
+Download Ashwin_Saji_Portfolio_Updated.html
+
+I also kept the original dark, infrastructure-engineering aesthetic rather than turning it into a generic resume website. The original code's structure/design was retained as the base. 
+
+Ashwin_Saji_Portfolio_Updated.html
+HTML
+and i want it in a fresh new theme
+Analyzed
 from pathlib import Path
 import re
 
@@ -343,3 +378,372 @@ out = Path("/mnt/data/Ashwin_Saji_Portfolio_Fresh_Theme.html")
 out.write_text(theme, encoding="utf-8")
 print(f"Created: {out}")
 print("New theme: editorial / Swiss-inspired light paper + ink, lime and violet accents, large typography, card-based experience, responsive layout.")
+
+STDOUT/STDERR
+Created: /mnt/data/Ashwin_Saji_Portfolio_Fresh_Theme.html
+New theme: editorial / Swiss-inspired light paper + ink, lime and violet accents, large typography, card-based experience, responsive layout.
+
+
+Absolutely. I rebuilt it with a completely fresh visual direction instead of just recoloring the old site.
+
+New theme
+Editorial / modern engineering aesthetic
+Warm off-white background instead of the previous dark UI
+Black + lime + violet accent system
+Large typography and strong visual hierarchy
+Cleaner navigation
+Big metric strip for your 600+ host pools / 1,000+ VMs
+Experience presented as polished case cards
+Dedicated CloudOpsComplete project section
+Certifications + education
+Stronger contact/footer section
+Fully responsive for desktop/mobile
+Still based on your actual resume information rather than invented experience.
+
+Download the new portfolio HTML
+
+This should feel much more like a real infrastructure engineer's personal portfolio and less like a traditional resume converted into HTML. 
+
+Ashwin_Saji_Portfolio_Fresh_Theme.html
+HTML
+fix these
+
+Yep — I see the problem in the screenshot. The Python generation code is being displayed as webpage content above and below the actual portfolio. That should obviously not be there.
+
+I cleaned the HTML and verified that:
+
+It starts directly with <!DOCTYPE html>
+It ends with </html>
+No Python-generation code remains
+The new theme itself is preserved
+Added some basic CSS hardening for cleaner rendering
+Use this file instead
+
+Download the CLEAN portfolio
+
+Open this file directly in Chrome. If Chrome is still showing the old version, close that tab completely and open the CLEAN file rather than the previous Fresh_Theme file. 
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ashwin Saji — Azure Virtual Desktop Engineer, Cloud Infrastructure, Azure DevOps and Terraform." />
+  <title>Ashwin Saji — AVD Engineer</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Space Grotesk', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'monospace']
+          },
+          colors: {
+            ink: '#101114',
+            paper: '#f5f3ee',
+            lime: '#c7f36b',
+            violet: '#7c5cff',
+            line: '#d8d5cc'
+          },
+          boxShadow: {
+            card: '0 12px 40px rgba(16,17,20,.08)'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    img, svg { max-width: 100%; }
+    a { text-decoration: none; }
+    html { background:#f5f3ee; }
+    body { overflow-x:hidden; }
+    .grain::after {
+      content:""; position:fixed; inset:0; pointer-events:none; opacity:.035; z-index:50;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+    }
+    .reveal { animation: rise .7s ease both; }
+    @keyframes rise { from {opacity:0; transform:translateY(18px)} to {opacity:1; transform:translateY(0)} }
+    .dot-grid {
+      background-image: radial-gradient(#c8c4ba 1px, transparent 1px);
+      background-size: 18px 18px;
+    }
+  </style>
+</head>
+
+<body class="grain bg-paper text-ink font-sans antialiased">
+
+  <!-- Navigation -->
+  <nav class="sticky top-0 z-40 bg-paper/90 backdrop-blur-xl border-b border-line">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="font-display font-bold text-lg tracking-tight">ASHWIN<span class="text-violet">.</span></a>
+      <div class="hidden sm:flex items-center gap-7 text-sm font-medium">
+        <a href="#work" class="hover:text-violet transition">Work</a>
+        <a href="#skills" class="hover:text-violet transition">Stack</a>
+        <a href="#projects" class="hover:text-violet transition">Projects</a>
+        <a href="#contact" class="px-4 py-2 rounded-full bg-ink text-paper hover:bg-violet transition">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="relative overflow-hidden border-b border-line">
+    <div class="absolute inset-y-0 right-0 w-1/2 dot-grid opacity-60 hidden lg:block"></div>
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28 relative">
+      <div class="max-w-5xl reveal">
+        <div class="flex items-center gap-3 mb-8 font-mono text-xs uppercase tracking-[.18em]">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-lime border border-ink"></span>
+          Available for infrastructure & cloud opportunities
+        </div>
+
+        <p class="font-mono text-sm text-violet mb-4">AZURE VIRTUAL DESKTOP ENGINEER</p>
+
+        <h1 class="font-display font-bold text-5xl sm:text-7xl lg:text-[6.8rem] leading-[.9] tracking-[-.06em] max-w-5xl">
+          Cloud infrastructure,
+          <span class="text-violet">built to run.</span>
+        </h1>
+
+        <div class="mt-10 grid lg:grid-cols-[1.1fr_.9fr] gap-10 items-end">
+          <p class="text-lg sm:text-xl leading-relaxed text-black/65 max-w-2xl">
+            I support enterprise Azure Virtual Desktop environments with Terraform, Azure DevOps, PowerShell, FSLogix, vulnerability remediation and production troubleshooting.
+          </p>
+          <div class="flex flex-wrap gap-3 lg:justify-end">
+            <a href="#work" class="px-6 py-3 rounded-full bg-ink text-paper font-semibold hover:bg-violet transition">See my experience ↘</a>
+            <a href="https://github.com/ashwinsajii" target="_blank" class="px-6 py-3 rounded-full border border-ink/20 font-mono text-sm hover:border-violet hover:text-violet transition">GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Scale -->
+  <section class="bg-ink text-paper border-b border-ink">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-10">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div>
+          <div class="font-display font-bold text-4xl sm:text-5xl">600+</div>
+          <div class="mt-2 font-mono text-[10px] uppercase tracking-widest text-paper/50">AVD host pools</div>
+        </div>
+        <div>
+          <div class="font-display font-bold text-4xl sm:text-5xl text-lime">1,000+</div>
+          <div class="mt-2 font-mono text-[10px] uppercase tracking-widest text-paper/50">Virtual machines</div>
+        </div>
+        <div>
+          <div class="font-display font-bold text-4xl sm:text-5xl">3</div>
+          <div class="mt-2 font-mono text-[10px] uppercase tracking-widest text-paper/50">AVD pool types</div>
+        </div>
+        <div>
+          <div class="font-display font-bold text-4xl sm:text-5xl text-violet">2024—Now</div>
+          <div class="mt-2 font-mono text-[10px] uppercase tracking-widest text-paper/50">Enterprise infrastructure</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section id="work" class="py-20 sm:py-28 border-b border-line">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="grid lg:grid-cols-[.35fr_.65fr] gap-12">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-[.18em] text-violet">01 / Experience</p>
+          <h2 class="font-display font-bold text-4xl sm:text-5xl mt-4 tracking-tight">What I work on.</h2>
+          <p class="mt-5 text-black/55 leading-relaxed">Production infrastructure, operational reliability and repeatable cloud deployment.</p>
+        </div>
+
+        <div class="space-y-4">
+          <article class="group bg-white rounded-2xl border border-line p-7 sm:p-9 shadow-card hover:-translate-y-1 transition">
+            <div class="flex flex-wrap justify-between gap-3 mb-6">
+              <span class="font-mono text-xs text-violet">01 — AVD OPERATIONS</span>
+              <span class="font-mono text-xs text-black/40">JAN 2025 — PRESENT</span>
+            </div>
+            <h3 class="font-display text-2xl font-bold">Enterprise AVD Operations</h3>
+            <p class="mt-3 text-black/60 leading-relaxed">
+              Support enterprise Azure Virtual Desktop environments with 600+ host pools and 1,000+ VMs across VA, VDP and VDNP environments.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Session hosts</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">FSLogix</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Incident troubleshooting</span>
+            </div>
+          </article>
+
+          <article class="group bg-white rounded-2xl border border-line p-7 sm:p-9 shadow-card hover:-translate-y-1 transition">
+            <div class="flex flex-wrap justify-between gap-3 mb-6">
+              <span class="font-mono text-xs text-violet">02 — AUTOMATION & IaC</span>
+              <span class="font-mono text-xs text-black/40">TERRAFORM / ADO</span>
+            </div>
+            <h3 class="font-display text-2xl font-bold">Recompose & Deployment</h3>
+            <p class="mt-3 text-black/60 leading-relaxed">
+              Perform session-host recompose and deployment activities using Terraform and Azure DevOps through controlled enterprise deployment and change processes.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Terraform</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Azure DevOps</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">PowerShell</span>
+            </div>
+          </article>
+
+          <article class="group bg-white rounded-2xl border border-line p-7 sm:p-9 shadow-card hover:-translate-y-1 transition">
+            <div class="flex flex-wrap justify-between gap-3 mb-6">
+              <span class="font-mono text-xs text-violet">03 — SECURITY & PATCHING</span>
+              <span class="font-mono text-xs text-black/40">QUALYS / CRQ</span>
+            </div>
+            <h3 class="font-display text-2xl font-bold">Vulnerability Remediation</h3>
+            <p class="mt-3 text-black/60 leading-relaxed">
+              Identify, mitigate and track vulnerabilities using Qualys while executing Microsoft and application patching through controlled CRQ workflows.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Qualys</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Patch management</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Change management</span>
+            </div>
+          </article>
+
+          <article class="group bg-white rounded-2xl border border-line p-7 sm:p-9 shadow-card hover:-translate-y-1 transition">
+            <div class="flex flex-wrap justify-between gap-3 mb-6">
+              <span class="font-mono text-xs text-violet">04 — SYSTEMS OPERATIONS</span>
+              <span class="font-mono text-xs text-black/40">JUN 2024 — DEC 2024</span>
+            </div>
+            <h3 class="font-display text-2xl font-bold">VMware & Server Operations</h3>
+            <p class="mt-3 text-black/60 leading-relaxed">
+              Earlier IT Operations experience covering VMware vSphere server operations, Exchange patching, privileged access and log-based troubleshooting.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">VMware vSphere</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">CyberArk</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Exchange patching</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stack -->
+  <section id="skills" class="py-20 sm:py-28 bg-white border-b border-line">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="max-w-2xl">
+        <p class="font-mono text-xs uppercase tracking-[.18em] text-violet">02 / Stack</p>
+        <h2 class="font-display font-bold text-4xl sm:text-5xl mt-4 tracking-tight">The tools behind the work.</h2>
+      </div>
+
+      <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+        <div class="bg-white p-7">
+          <p class="font-mono text-xs text-violet mb-5">CLOUD</p>
+          <h3 class="font-display font-bold text-xl">Azure & AVD</h3>
+          <p class="mt-4 text-sm text-black/55 leading-7">Azure Virtual Desktop, session hosts, host pools, FSLogix, Azure VMs, Azure Monitor and Log Analytics.</p>
+        </div>
+        <div class="bg-white p-7">
+          <p class="font-mono text-xs text-violet mb-5">AUTOMATION</p>
+          <h3 class="font-display font-bold text-xl">IaC & DevOps</h3>
+          <p class="mt-4 text-sm text-black/55 leading-7">Terraform, Infrastructure as Code, Azure DevOps, CI/CD, PowerShell, Git, GitHub and Bash.</p>
+        </div>
+        <div class="bg-white p-7">
+          <p class="font-mono text-xs text-violet mb-5">SYSTEMS</p>
+          <h3 class="font-display font-bold text-xl">Infrastructure</h3>
+          <p class="mt-4 text-sm text-black/55 leading-7">Linux server administration, Windows Server, Ubuntu, VMware vSphere and KQL-based log analysis.</p>
+        </div>
+        <div class="bg-white p-7">
+          <p class="font-mono text-xs text-violet mb-5">SECURITY</p>
+          <h3 class="font-display font-bold text-xl">Operations</h3>
+          <p class="mt-4 text-sm text-black/55 leading-7">Qualys, CyberArk, patch management, ServiceNow, incident troubleshooting and change / CRQ processes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project -->
+  <section id="projects" class="py-20 sm:py-28 border-b border-line">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-[.18em] text-violet">03 / Project</p>
+          <h2 class="font-display font-bold text-4xl sm:text-5xl mt-4 tracking-tight">CloudOpsComplete</h2>
+        </div>
+        <p class="max-w-xl text-black/55 leading-relaxed">
+          A hands-on infrastructure lab built to practice containerized services, observability, load balancing, storage and operational troubleshooting.
+        </p>
+      </div>
+
+      <div class="mt-10 rounded-3xl bg-ink text-paper overflow-hidden">
+        <div class="p-8 sm:p-12">
+          <div class="flex flex-wrap gap-2 font-mono text-xs text-paper/60">
+            <span>DOCKER COMPOSE</span><span>•</span><span>NGINX</span><span>•</span><span>FLASK</span><span>•</span><span>MINIO</span><span>•</span><span>PROMETHEUS</span><span>•</span><span>GRAFANA</span>
+          </div>
+          <div class="mt-10 grid lg:grid-cols-2 gap-10">
+            <div>
+              <h3 class="font-display text-3xl font-bold">A small infrastructure stack with real operational problems.</h3>
+              <p class="mt-5 text-paper/60 leading-relaxed">Built a multi-service stack with Nginx load balancing, two Flask web services, MinIO object storage, Prometheus, Grafana and Node Exporter.</p>
+            </div>
+            <ul class="space-y-4 font-mono text-sm text-paper/75">
+              <li>→ Bash backup and cleanup workflows</li>
+              <li>→ Container connectivity troubleshooting</li>
+              <li>→ Service and application log diagnosis</li>
+              <li>→ Practical containerized infrastructure operations</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education / Certs -->
+  <section class="py-20 sm:py-24 bg-white border-b border-line">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-6">
+      <div class="rounded-2xl border border-line p-8">
+        <p class="font-mono text-xs uppercase tracking-[.18em] text-violet">04 / Certifications</p>
+        <div class="mt-7 space-y-4">
+          <div class="flex justify-between gap-4 border-b border-line pb-4">
+            <span class="font-semibold">Azure Fundamentals</span>
+            <span class="font-mono text-xs text-black/45">AZ-900</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="font-semibold">Azure AI Fundamentals</span>
+            <span class="font-mono text-xs text-black/45">AI-900</span>
+          </div>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-line p-8">
+        <p class="font-mono text-xs uppercase tracking-[.18em] text-violet">05 / Education</p>
+        <h3 class="font-display text-2xl font-bold mt-7">Bachelor of Computer Applications</h3>
+        <p class="mt-2 text-black/55">Computer Science — Marian College, Kuttikanam</p>
+        <p class="mt-5 font-mono text-xs text-black/40">OCT 2021 — APR 2024</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <footer id="contact" class="bg-lime">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-16 sm:py-20">
+      <div class="grid lg:grid-cols-2 gap-12 items-end">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-[.18em] mb-5">Let's connect</p>
+          <h2 class="font-display font-bold text-5xl sm:text-7xl tracking-[-.05em] leading-none">Build something<br>reliable.</h2>
+        </div>
+        <div class="lg:text-right">
+          <p class="text-black/60 mb-6">Ashwin Saji · Azure Virtual Desktop Engineer</p>
+          <div class="flex flex-wrap lg:justify-end gap-3">
+            <a href="mailto:ashwinsaji017@gmail.com" class="px-5 py-3 rounded-full bg-ink text-paper font-semibold hover:bg-violet transition">Email</a>
+            <a href="https://linkedin.com/in/ashwinsajii" target="_blank" class="px-5 py-3 rounded-full border border-ink/20 font-semibold hover:bg-paper transition">LinkedIn ↗</a>
+            <a href="https://github.com/ashwinsajii" target="_blank" class="px-5 py-3 rounded-full border border-ink/20 font-semibold hover:bg-paper transition">GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="mt-16 pt-5 border-t border-ink/15 flex justify-between font-mono text-[10px] uppercase tracking-widest">
+        <span>© 2026 Ashwin Saji</span>
+        <span>Cloud · Infrastructure · Automation</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
+Ashwin_Saji_Portfolio_CLEAN.html
+HTML
