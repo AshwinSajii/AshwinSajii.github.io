@@ -1,248 +1,345 @@
-<!DOCTYPE html>
+from pathlib import Path
+import re
+
+src = Path("/mnt/data/Ashwin_Saji_Portfolio_Updated.html")
+old = src.read_text(encoding="utf-8")
+
+# Extract the existing content so the redesign preserves the resume-grounded copy.
+def section_by_id(html, sid):
+    m = re.search(rf'<section id="{re.escape(sid)}".*?</section>', html, flags=re.S)
+    return m.group(0) if m else ""
+
+metrics = section_by_id(old, "metrics")
+case_studies = section_by_id(old, "case-studies")
+skills = section_by_id(old, "skills")
+
+# Extract projects/certs sections from the previous generated portfolio.
+proj_m = re.search(r'<!-- Projects -->.*?</section>', old, flags=re.S)
+projects = proj_m.group(0) if proj_m else ""
+cert_m = re.search(r'<section class="py-16 px-6 border-b border-brand-border">.*?</section>\s*<!-- Footer / Contact -->', old, flags=re.S)
+certs = cert_m.group(0).replace("\n\n  <!-- Footer / Contact -->", "") if cert_m else ""
+
+theme = r"""<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ashwin Saji | Cloud Platform & Infrastructure Engineer</title>
+  <meta name="description" content="Ashwin Saji — Azure Virtual Desktop Engineer, Cloud Infrastructure, Azure DevOps and Terraform." />
+  <title>Ashwin Saji — AVD Engineer</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
+            display: ['Space Grotesk', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'monospace']
           },
           colors: {
-            brand: {
-              bg: '#0B0F19',
-              card: '#111827',
-              border: '#1F2937',
-              accent: '#38BDF8',
-              muted: '#9CA3AF'
-            }
+            ink: '#101114',
+            paper: '#f5f3ee',
+            lime: '#c7f36b',
+            violet: '#7c5cff',
+            line: '#d8d5cc'
+          },
+          boxShadow: {
+            card: '0 12px 40px rgba(16,17,20,.08)'
           }
         }
       }
     }
   </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    html { background:#f5f3ee; }
+    body { overflow-x:hidden; }
+    .grain::after {
+      content:""; position:fixed; inset:0; pointer-events:none; opacity:.035; z-index:50;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+    }
+    .reveal { animation: rise .7s ease both; }
+    @keyframes rise { from {opacity:0; transform:translateY(18px)} to {opacity:1; transform:translateY(0)} }
+    .dot-grid {
+      background-image: radial-gradient(#c8c4ba 1px, transparent 1px);
+      background-size: 18px 18px;
+    }
+  </style>
 </head>
-<body class="bg-brand-bg text-gray-100 font-sans antialiased selection:bg-brand-accent selection:text-black">
+
+<body class="grain bg-paper text-ink font-sans antialiased">
 
   <!-- Navigation -->
-  <nav class="sticky top-0 z-50 backdrop-blur-md bg-brand-bg/80 border-b border-brand-border">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <span class="font-mono font-bold text-lg tracking-tight text-brand-accent">ashwin.saji<span class="text-white">()</span></span>
-      <div class="flex items-center space-x-6 text-sm font-medium text-brand-muted">
-        <a href="#metrics" class="hover:text-white transition">Scale</a>
-        <a href="#case-studies" class="hover:text-white transition">Case Studies</a>
-        <a href="#skills" class="hover:text-white transition">Skills</a>
-        <a href="#contact" class="hover:text-brand-accent transition">Contact</a>
+  <nav class="sticky top-0 z-40 bg-paper/90 backdrop-blur-xl border-b border-line">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="font-display font-bold text-lg tracking-tight">ASHWIN<span class="text-violet">.</span></a>
+      <div class="hidden sm:flex items-center gap-7 text-sm font-medium">
+        <a href="#work" class="hover:text-violet transition">Work</a>
+        <a href="#skills" class="hover:text-violet transition">Stack</a>
+        <a href="#projects" class="hover:text-violet transition">Projects</a>
+        <a href="#contact" class="px-4 py-2 rounded-full bg-ink text-paper hover:bg-violet transition">Contact</a>
       </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <header class="py-20 px-6 border-b border-brand-border">
-    <div class="max-w-6xl mx-auto">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-border bg-brand-card text-xs font-mono text-brand-accent mb-6">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        Platform Engineering • Infrastructure as Code • Reliability
-      </div>
-      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-6">
-        Architecting Cloud Platforms & <br class="hidden sm:block" />
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-indigo-400">Automating Enterprise Scale.</span>
-      </h1>
-      <p class="text-lg sm:text-xl text-brand-muted max-w-3xl leading-relaxed mb-8">
-        Cloud Platform Engineer specializing in high-density Azure environments, declarative automation with <span class="text-white font-semibold">Terraform</span> and <span class="text-white font-semibold">Azure DevOps</span>, and systems reliability. Proven track record managing mission-critical fleets under strict ITIL change governance.
-      </p>
-      <div class="flex flex-wrap gap-4">
-        <a href="#case-studies" class="px-6 py-3 rounded-lg bg-brand-accent text-black font-semibold text-sm hover:bg-sky-300 transition">View Architecture Case Studies</a>
-        <a href="https://github.com/ashwinsajii" target="_blank" class="px-6 py-3 rounded-lg border border-brand-border bg-brand-card text-white font-semibold text-sm hover:border-gray-600 transition flex items-center gap-2 font-mono">
-          github.com/ashwinsajii
-        </a>
+  <!-- Hero -->
+  <header class="relative overflow-hidden border-b border-line">
+    <div class="absolute inset-y-0 right-0 w-1/2 dot-grid opacity-60 hidden lg:block"></div>
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-28 relative">
+      <div class="max-w-5xl reveal">
+        <div class="flex items-center gap-3 mb-8 font-mono text-xs uppercase tracking-[.18em]">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-lime border border-ink"></span>
+          Available for infrastructure & cloud opportunities
+        </div>
+
+        <p class="font-mono text-sm text-violet mb-4">AZURE VIRTUAL DESKTOP ENGINEER</p>
+
+        <h1 class="font-display font-bold text-5xl sm:text-7xl lg:text-[6.8rem] leading-[.9] tracking-[-.06em] max-w-5xl">
+          Cloud infrastructure,
+          <span class="text-violet">built to run.</span>
+        </h1>
+
+        <div class="mt-10 grid lg:grid-cols-[1.1fr_.9fr] gap-10 items-end">
+          <p class="text-lg sm:text-xl leading-relaxed text-black/65 max-w-2xl">
+            I support enterprise Azure Virtual Desktop environments with Terraform, Azure DevOps, PowerShell, FSLogix, vulnerability remediation and production troubleshooting.
+          </p>
+          <div class="flex flex-wrap gap-3 lg:justify-end">
+            <a href="#work" class="px-6 py-3 rounded-full bg-ink text-paper font-semibold hover:bg-violet transition">See my experience ↘</a>
+            <a href="https://github.com/ashwinsajii" target="_blank" class="px-6 py-3 rounded-full border border-ink/20 font-mono text-sm hover:border-violet hover:text-violet transition">GitHub ↗</a>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- High-Scale Metrics Banner -->
-  <section id="metrics" class="py-12 bg-brand-card/50 border-b border-brand-border px-6">
-    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-      <div>
-        <div class="text-3xl sm:text-4xl font-extrabold text-white font-mono mb-1">2,000+</div>
-        <div class="text-xs uppercase tracking-wider text-brand-muted font-medium">Session Hosts Managed</div>
-      </div>
-      <div>
-        <div class="text-3xl sm:text-4xl font-extrabold text-brand-accent font-mono mb-1">600+</div>
-        <div class="text-xs uppercase tracking-wider text-brand-muted font-medium">Host Pools (VA/VDP/VDNP)</div>
-      </div>
-      <div>
-        <div class="text-3xl sm:text-4xl font-extrabold text-white font-mono mb-1">100%</div>
-        <div class="text-xs uppercase tracking-wider text-brand-muted font-medium">Declarative Provisioning</div>
-      </div>
-      <div>
-        <div class="text-3xl sm:text-4xl font-extrabold text-emerald-400 font-mono mb-1">99.9%</div>
-        <div class="text-xs uppercase tracking-wider text-brand-muted font-medium">Fleet SLA Sustained</div>
+  <!-- Scale -->
+  <section class="bg-ink text-paper border-b border-ink">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-10">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div>
+          <div class="font-display font-bold text-4xl sm:text-5xl">600+</div>
+          <div class="mt-2 font-mono text-[10px] uppercase tracking-widest text-paper/50">AVD host pools</div>
+        </div>
+        <div>
+          <div class="font-display font-bold text-4xl sm:text-5xl text-lime">1,000+</div>
+          <div class="mt-2 font-mono text-[10px] uppercase tracking-widest text-paper/50">Virtual machines</div>
+        </div>
+        <div>
+          <div class="font-display font-bold text-4xl sm:text-5xl">3</div>
+          <div class="mt-2 font-mono text-[10px] uppercase tracking-widest text-paper/50">AVD pool types</div>
+        </div>
+        <div>
+          <div class="font-display font-bold text-4xl sm:text-5xl text-violet">2024—Now</div>
+          <div class="mt-2 font-mono text-[10px] uppercase tracking-widest text-paper/50">Enterprise infrastructure</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Architectural Case Studies -->
-  <section id="case-studies" class="py-20 px-6 border-b border-brand-border">
-    <div class="max-w-6xl mx-auto">
-      <div class="mb-12">
-        <h2 class="text-xs uppercase tracking-widest text-brand-accent font-mono mb-2">Systems & Architecture</h2>
-        <h3 class="text-3xl font-bold text-white">Engineering Case Studies</h3>
-      </div>
+  <!-- Work -->
+  <section id="work" class="py-20 sm:py-28 border-b border-line">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="grid lg:grid-cols-[.35fr_.65fr] gap-12">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-[.18em] text-violet">01 / Experience</p>
+          <h2 class="font-display font-bold text-4xl sm:text-5xl mt-4 tracking-tight">What I work on.</h2>
+          <p class="mt-5 text-black/55 leading-relaxed">Production infrastructure, operational reliability and repeatable cloud deployment.</p>
+        </div>
 
-      <div class="grid md:grid-cols-2 gap-8">
-        
-        <!-- Case Study 1 -->
-        <article class="p-8 rounded-xl bg-brand-card border border-brand-border hover:border-gray-700 transition">
-          <div class="flex items-center justify-between text-xs font-mono text-brand-muted mb-4">
-            <span>IaC & AUTOMATION</span>
-            <span class="text-brand-accent">Terraform • ADO</span>
-          </div>
-          <h4 class="text-xl font-bold text-white mb-3">Enterprise Cloud Desktop Blueprint</h4>
-          <p class="text-brand-muted text-sm leading-relaxed mb-6">
-            Engineered modular Terraform repositories and multi-stage Azure DevOps pipelines to provision and maintain 600+ host pools across Virtual App, Persistent, and Non-Persistent tiers, ensuring zero configuration drift.
-          </p>
-          <ul class="space-y-2 text-xs text-gray-300 font-mono">
-            <li class="flex items-center gap-2"><span class="text-brand-accent">▹</span> Parameterized FSLogix storage architecture</li>
-            <li class="flex items-center gap-2"><span class="text-brand-accent">▹</span> Automated scaling plan deployment via code</li>
-            <li class="flex items-center gap-2"><span class="text-brand-accent">▹</span> Static security enforcement with Checkov/TFLint</li>
-          </ul>
-        </article>
+        <div class="space-y-4">
+          <article class="group bg-white rounded-2xl border border-line p-7 sm:p-9 shadow-card hover:-translate-y-1 transition">
+            <div class="flex flex-wrap justify-between gap-3 mb-6">
+              <span class="font-mono text-xs text-violet">01 — AVD OPERATIONS</span>
+              <span class="font-mono text-xs text-black/40">JAN 2025 — PRESENT</span>
+            </div>
+            <h3 class="font-display text-2xl font-bold">Enterprise AVD Operations</h3>
+            <p class="mt-3 text-black/60 leading-relaxed">
+              Support enterprise Azure Virtual Desktop environments with 600+ host pools and 1,000+ VMs across VA, VDP and VDNP environments.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Session hosts</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">FSLogix</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Incident troubleshooting</span>
+            </div>
+          </article>
 
-        <!-- Case Study 2 -->
-        <article class="p-8 rounded-xl bg-brand-card border border-brand-border hover:border-gray-700 transition">
-          <div class="flex items-center justify-between text-xs font-mono text-brand-muted mb-4">
-            <span>RELIABILITY ENGINEERING</span>
-            <span class="text-brand-accent">PowerShell • Azure APIs</span>
-          </div>
-          <h4 class="text-xl font-bold text-white mb-3">Dynamic Drain & Host Lifecycle Engine</h4>
-          <p class="text-brand-muted text-sm leading-relaxed mb-6">
-            Developed programmatic session-aware draining orchestration using PowerShell and REST endpoints to patch, remediate, and maintain 2,000+ session hosts without interrupting active production workloads.
-          </p>
-          <ul class="space-y-2 text-xs text-gray-300 font-mono">
-            <li class="flex items-center gap-2"><span class="text-brand-accent">▹</span> Decoupled dynamic scaling plans during maintenance</li>
-            <li class="flex items-center gap-2"><span class="text-brand-accent">▹</span> Automated disk sweeps & CBS component store recovery</li>
-            <li class="flex items-center gap-2"><span class="text-brand-accent">▹</span> Compressed patching cycles from 4 weeks to 7 days</li>
-          </ul>
-        </article>
+          <article class="group bg-white rounded-2xl border border-line p-7 sm:p-9 shadow-card hover:-translate-y-1 transition">
+            <div class="flex flex-wrap justify-between gap-3 mb-6">
+              <span class="font-mono text-xs text-violet">02 — AUTOMATION & IaC</span>
+              <span class="font-mono text-xs text-black/40">TERRAFORM / ADO</span>
+            </div>
+            <h3 class="font-display text-2xl font-bold">Recompose & Deployment</h3>
+            <p class="mt-3 text-black/60 leading-relaxed">
+              Perform session-host recompose and deployment activities using Terraform and Azure DevOps through controlled enterprise deployment and change processes.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Terraform</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Azure DevOps</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">PowerShell</span>
+            </div>
+          </article>
 
-        <!-- Case Study 3 -->
-        <article class="p-8 rounded-xl bg-brand-card border border-brand-border hover:border-gray-700 transition">
-          <div class="flex items-center justify-between text-xs font-mono text-brand-muted mb-4">
-            <span>IMMUTABLE INFRASTRUCTURE</span>
-            <span class="text-brand-accent">Packer • Blue/Green</span>
-          </div>
-          <h4 class="text-xl font-bold text-white mb-3">Rolling Recomposition for Ephemeral Pools</h4>
-          <p class="text-brand-muted text-sm leading-relaxed mb-6">
-            Designed an automated golden image capture and redeployment pipeline for Virtual App (VA) pools, shifting load to freshly deployed hosts and terminating stale instances to eliminate local OS configuration drift.
-          </p>
-          <ul class="space-y-2 text-xs text-gray-300 font-mono">
-            <li class="flex items-center gap-2"><span class="text-brand-accent">▹</span> Zero-downtime rolling host replacement</li>
-            <li class="flex items-center gap-2"><span class="text-brand-accent">▹</span> Golden image baselines with baked runtime runbooks</li>
-            <li class="flex items-center gap-2"><span class="text-brand-accent">▹</span> Defect containment prior to production cutover</li>
-          </ul>
-        </article>
+          <article class="group bg-white rounded-2xl border border-line p-7 sm:p-9 shadow-card hover:-translate-y-1 transition">
+            <div class="flex flex-wrap justify-between gap-3 mb-6">
+              <span class="font-mono text-xs text-violet">03 — SECURITY & PATCHING</span>
+              <span class="font-mono text-xs text-black/40">QUALYS / CRQ</span>
+            </div>
+            <h3 class="font-display text-2xl font-bold">Vulnerability Remediation</h3>
+            <p class="mt-3 text-black/60 leading-relaxed">
+              Identify, mitigate and track vulnerabilities using Qualys while executing Microsoft and application patching through controlled CRQ workflows.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Qualys</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Patch management</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Change management</span>
+            </div>
+          </article>
 
-        <!-- Case Study 4 -->
-        <article class="p-8 rounded-xl bg-brand-card border border-brand-border hover:border-gray-700 transition">
-          <div class="flex items-center justify-between text-xs font-mono text-brand-muted mb-4">
-            <span>GOVERNANCE & REMEDIATION</span>
-            <span class="text-brand-accent">ITIL • CVE Lifecycle</span>
-          </div>
-          <h4 class="text-xl font-bold text-white mb-3">Enterprise CVE Vulnerability Governance</h4>
-          <p class="text-brand-muted text-sm leading-relaxed mb-6">
-            Orchestrated end-to-end vulnerability triage and CVSS impact analysis across enterprise virtual fleets. Directed cross-team execution (AD, Intune, SCCM) under strict Change Request (CRQ/CTask) workflows.
-          </p>
-          <ul class="space-y-2 text-xs text-gray-300 font-mono">
-            <li class="flex items-center gap-2"><span class="text-brand-accent">▹</span> ITIL Change Process Authority (CPA) ownership</li>
-            <li class="flex items-center gap-2"><span class="text-brand-accent">▹</span> Automated compliance telemetry using custom scripting</li>
-            <li class="flex items-center gap-2"><span class="text-brand-accent">▹</span> Transactional binary deployment on legacy 400-node clusters</li>
-          </ul>
-        </article>
-
+          <article class="group bg-white rounded-2xl border border-line p-7 sm:p-9 shadow-card hover:-translate-y-1 transition">
+            <div class="flex flex-wrap justify-between gap-3 mb-6">
+              <span class="font-mono text-xs text-violet">04 — SYSTEMS OPERATIONS</span>
+              <span class="font-mono text-xs text-black/40">JUN 2024 — DEC 2024</span>
+            </div>
+            <h3 class="font-display text-2xl font-bold">VMware & Server Operations</h3>
+            <p class="mt-3 text-black/60 leading-relaxed">
+              Earlier IT Operations experience covering VMware vSphere server operations, Exchange patching, privileged access and log-based troubleshooting.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">VMware vSphere</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">CyberArk</span>
+              <span class="px-3 py-1.5 rounded-full bg-paper text-xs">Exchange patching</span>
+            </div>
+          </article>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Technical Competencies Matrix -->
-  <section id="skills" class="py-20 px-6 border-b border-brand-border">
-    <div class="max-w-6xl mx-auto">
-      <div class="mb-12">
-        <h2 class="text-xs uppercase tracking-widest text-brand-accent font-mono mb-2">Capabilities</h2>
-        <h3 class="text-3xl font-bold text-white">Technical Toolkit</h3>
+  <!-- Stack -->
+  <section id="skills" class="py-20 sm:py-28 bg-white border-b border-line">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="max-w-2xl">
+        <p class="font-mono text-xs uppercase tracking-[.18em] text-violet">02 / Stack</p>
+        <h2 class="font-display font-bold text-4xl sm:text-5xl mt-4 tracking-tight">The tools behind the work.</h2>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        
-        <div class="p-6 rounded-lg bg-brand-card border border-brand-border">
-          <h4 class="font-bold text-white mb-3 text-base">Cloud & Virtualization</h4>
-          <ul class="space-y-2 text-sm text-brand-muted font-mono">
-            <li>• Azure Virtual Desktop</li>
-            <li>• Multi-Session Win11/10</li>
-            <li>• FSLogix Architecture</li>
-            <li>• Azure NetApp / Files</li>
-            <li>• Azure Resource Graph</li>
-          </ul>
+      <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line border border-line rounded-2xl overflow-hidden">
+        <div class="bg-white p-7">
+          <p class="font-mono text-xs text-violet mb-5">CLOUD</p>
+          <h3 class="font-display font-bold text-xl">Azure & AVD</h3>
+          <p class="mt-4 text-sm text-black/55 leading-7">Azure Virtual Desktop, session hosts, host pools, FSLogix, Azure VMs, Azure Monitor and Log Analytics.</p>
         </div>
-
-        <div class="p-6 rounded-lg bg-brand-card border border-brand-border">
-          <h4 class="font-bold text-white mb-3 text-base">IaC & Automation</h4>
-          <ul class="space-y-2 text-sm text-brand-muted font-mono">
-            <li>• Terraform (HCL)</li>
-            <li>• Azure DevOps Pipelines</li>
-            <li>• Advanced PowerShell</li>
-            <li>• Git Branching Strategies</li>
-            <li>• GitHub Actions / CI</li>
-          </ul>
+        <div class="bg-white p-7">
+          <p class="font-mono text-xs text-violet mb-5">AUTOMATION</p>
+          <h3 class="font-display font-bold text-xl">IaC & DevOps</h3>
+          <p class="mt-4 text-sm text-black/55 leading-7">Terraform, Infrastructure as Code, Azure DevOps, CI/CD, PowerShell, Git, GitHub and Bash.</p>
         </div>
-
-        <div class="p-6 rounded-lg bg-brand-card border border-brand-border">
-          <h4 class="font-bold text-white mb-3 text-base">Systems & Reliability</h4>
-          <ul class="space-y-2 text-sm text-brand-muted font-mono">
-            <li>• Windows Servicing (DISM)</li>
-            <li>• CBS Logs & OS Recovery</li>
-            <li>• Dynamic Drain Orchestration</li>
-            <li>• Linux Administration</li>
-            <li>• Performance Profiling</li>
-          </ul>
+        <div class="bg-white p-7">
+          <p class="font-mono text-xs text-violet mb-5">SYSTEMS</p>
+          <h3 class="font-display font-bold text-xl">Infrastructure</h3>
+          <p class="mt-4 text-sm text-black/55 leading-7">Linux server administration, Windows Server, Ubuntu, VMware vSphere and KQL-based log analysis.</p>
         </div>
-
-        <div class="p-6 rounded-lg bg-brand-card border border-brand-border">
-          <h4 class="font-bold text-white mb-3 text-base">Governance & Security</h4>
-          <ul class="space-y-2 text-sm text-brand-muted font-mono">
-            <li>• ITIL (CRQ / CTask)</li>
-            <li>• CVE / CVSS Analysis</li>
-            <li>• Change Advisory Boards</li>
-            <li>• Enterprise Blast Radius</li>
-            <li>• Cross-Team Delivery</li>
-          </ul>
+        <div class="bg-white p-7">
+          <p class="font-mono text-xs text-violet mb-5">SECURITY</p>
+          <h3 class="font-display font-bold text-xl">Operations</h3>
+          <p class="mt-4 text-sm text-black/55 leading-7">Qualys, CyberArk, patch management, ServiceNow, incident troubleshooting and change / CRQ processes.</p>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- Footer / Contact -->
-  <footer id="contact" class="py-16 px-6">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-      <div>
-        <h4 class="text-xl font-bold text-white mb-1">Ashwin Saji</h4>
-        <p class="text-sm text-brand-muted">Engineering reliable systems, declarative cloud architectures, and scalable operations.</p>
+  <!-- Project -->
+  <section id="projects" class="py-20 sm:py-28 border-b border-line">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-[.18em] text-violet">03 / Project</p>
+          <h2 class="font-display font-bold text-4xl sm:text-5xl mt-4 tracking-tight">CloudOpsComplete</h2>
+        </div>
+        <p class="max-w-xl text-black/55 leading-relaxed">
+          A hands-on infrastructure lab built to practice containerized services, observability, load balancing, storage and operational troubleshooting.
+        </p>
       </div>
-      <div class="flex items-center gap-6 font-mono text-sm">
-        <a href="https://github.com/ashwinsajii" target="_blank" class="text-brand-accent hover:underline">GitHub</a>
-        <a href="https://linkedin.com/in/ashwinsaji" target="_blank" class="text-brand-accent hover:underline">LinkedIn</a>
+
+      <div class="mt-10 rounded-3xl bg-ink text-paper overflow-hidden">
+        <div class="p-8 sm:p-12">
+          <div class="flex flex-wrap gap-2 font-mono text-xs text-paper/60">
+            <span>DOCKER COMPOSE</span><span>•</span><span>NGINX</span><span>•</span><span>FLASK</span><span>•</span><span>MINIO</span><span>•</span><span>PROMETHEUS</span><span>•</span><span>GRAFANA</span>
+          </div>
+          <div class="mt-10 grid lg:grid-cols-2 gap-10">
+            <div>
+              <h3 class="font-display text-3xl font-bold">A small infrastructure stack with real operational problems.</h3>
+              <p class="mt-5 text-paper/60 leading-relaxed">Built a multi-service stack with Nginx load balancing, two Flask web services, MinIO object storage, Prometheus, Grafana and Node Exporter.</p>
+            </div>
+            <ul class="space-y-4 font-mono text-sm text-paper/75">
+              <li>→ Bash backup and cleanup workflows</li>
+              <li>→ Container connectivity troubleshooting</li>
+              <li>→ Service and application log diagnosis</li>
+              <li>→ Practical containerized infrastructure operations</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education / Certs -->
+  <section class="py-20 sm:py-24 bg-white border-b border-line">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-6">
+      <div class="rounded-2xl border border-line p-8">
+        <p class="font-mono text-xs uppercase tracking-[.18em] text-violet">04 / Certifications</p>
+        <div class="mt-7 space-y-4">
+          <div class="flex justify-between gap-4 border-b border-line pb-4">
+            <span class="font-semibold">Azure Fundamentals</span>
+            <span class="font-mono text-xs text-black/45">AZ-900</span>
+          </div>
+          <div class="flex justify-between gap-4">
+            <span class="font-semibold">Azure AI Fundamentals</span>
+            <span class="font-mono text-xs text-black/45">AI-900</span>
+          </div>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-line p-8">
+        <p class="font-mono text-xs uppercase tracking-[.18em] text-violet">05 / Education</p>
+        <h3 class="font-display text-2xl font-bold mt-7">Bachelor of Computer Applications</h3>
+        <p class="mt-2 text-black/55">Computer Science — Marian College, Kuttikanam</p>
+        <p class="mt-5 font-mono text-xs text-black/40">OCT 2021 — APR 2024</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <footer id="contact" class="bg-lime">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-16 sm:py-20">
+      <div class="grid lg:grid-cols-2 gap-12 items-end">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-[.18em] mb-5">Let's connect</p>
+          <h2 class="font-display font-bold text-5xl sm:text-7xl tracking-[-.05em] leading-none">Build something<br>reliable.</h2>
+        </div>
+        <div class="lg:text-right">
+          <p class="text-black/60 mb-6">Ashwin Saji · Azure Virtual Desktop Engineer</p>
+          <div class="flex flex-wrap lg:justify-end gap-3">
+            <a href="mailto:ashwinsaji017@gmail.com" class="px-5 py-3 rounded-full bg-ink text-paper font-semibold hover:bg-violet transition">Email</a>
+            <a href="https://linkedin.com/in/ashwinsajii" target="_blank" class="px-5 py-3 rounded-full border border-ink/20 font-semibold hover:bg-paper transition">LinkedIn ↗</a>
+            <a href="https://github.com/ashwinsajii" target="_blank" class="px-5 py-3 rounded-full border border-ink/20 font-semibold hover:bg-paper transition">GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="mt-16 pt-5 border-t border-ink/15 flex justify-between font-mono text-[10px] uppercase tracking-widest">
+        <span>© 2026 Ashwin Saji</span>
+        <span>Cloud · Infrastructure · Automation</span>
       </div>
     </div>
   </footer>
 
 </body>
-</html>
+</html>"""
+
+out = Path("/mnt/data/Ashwin_Saji_Portfolio_Fresh_Theme.html")
+out.write_text(theme, encoding="utf-8")
+print(f"Created: {out}")
+print("New theme: editorial / Swiss-inspired light paper + ink, lime and violet accents, large typography, card-based experience, responsive layout.")
